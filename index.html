@@ -68,18 +68,59 @@
                 
                 <div class="card">
                     <div class="card-title">
+                        <i class="fab fa-telegram"></i>
+                        Telegram Hit Sender
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="telegram-toggle">
+                            <span class="toggle-slider"></span>
+                            Enable Telegram Hits
+                        </label>
+                    </div>
+                    
+                    <div id="telegram-config" class="telegram-config" style="display: none;">
+                        <div class="input-group">
+                            <label for="bot-token">Bot Token:</label>
+                            <input type="text" id="bot-token" placeholder="1234567890:ABCdefGHIjklMNOpqrsTUVwxyz">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="chat-id">Chat ID:</label>
+                            <input type="text" id="chat-id" placeholder="123456789">
+                        </div>
+                        
+                        <div class="input-group">
+                            <button class="btn btn-secondary" id="test-telegram-btn">
+                                <i class="fas fa-paper-plane"></i>
+                                Test Connection
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="telegram-status" id="telegram-status">
+                        <i class="fas fa-info-circle"></i>
+                        Telegram hits are disabled
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
                         <i class="fas fa-key"></i>
                         Results
                     </div>
                     
-                    <div class="results" id="results">
-                        <div class="result-item">
-                            <div class="result-title">
-                                <i class="fas fa-info-circle"></i>
-                                No results yet
-                            </div>
-                            <div class="result-content">
-                                Process some cookies to see results here.
+                    <div class="results-container">
+                        <div class="results" id="results">
+                            <div class="result-item">
+                                <div class="result-title">
+                                    <i class="fas fa-info-circle"></i>
+                                    No results yet
+                                </div>
+                                <div class="result-content">
+                                    Process some cookies to see results here.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -153,9 +194,11 @@
                         </div>
                     </div>
                     
-                    <div class="file-list" id="batch-results" style="max-height: 300px; margin-top: 15px;">
-                        <div class="file-item">
-                            <span>No results yet</span>
+                    <div class="results-container">
+                        <div class="file-list" id="batch-results" style="max-height: 300px; margin-top: 15px;">
+                            <div class="file-item">
+                                <span>No results yet</span>
+                            </div>
                         </div>
                     </div>
                     
@@ -182,6 +225,7 @@
                     <li>Check account validity and details</li>
                     <li>Generate direct login tokens</li>
                     <li>Batch processing of multiple files</li>
+                    <li>Telegram hit sender for valid accounts</li>
                 </ul>
                 
                 <h3 style="margin: 20px 0 10px; color: var(--primary);">Supported Formats:</h3>
@@ -192,10 +236,20 @@
                     <li>Header strings with NetflixId cookie</li>
                     <li>Netscape format cookie files</li>
                 </ul>
+
+                <h3 style="margin: 20px 0 10px; color: var(--primary);">Telegram Setup:</h3>
+                <ol style="padding-left: 20px; margin-bottom: 20px;">
+                    <li>Create a bot with @BotFather on Telegram</li>
+                    <li>Get your bot token from BotFather</li>
+                    <li>Start a chat with your bot and send any message</li>
+                    <li>Get your chat ID from: https://api.telegram.org/bot&lt;YourBOTToken&gt;/getUpdates</li>
+                    <li>Enable Telegram hits and enter your credentials</li>
+                </ol>
                 
                 <h3 style="margin: 20px 0 10px; color: var(--primary);">Usage:</h3>
                 <ol style="padding-left: 20px; margin-bottom: 20px;">
                     <li>Paste cookies or load from file in the Single Input tab</li>
+                    <li>Configure Telegram hits if desired</li>
                     <li>Select your preferred output mode (Full Info or Token Only)</li>
                     <li>Click "Generate Token" to process</li>
                     <li>For multiple files, use the Batch Processing tab</li>
@@ -208,7 +262,7 @@
         </div>
 
         <footer>
-            <p>Netflix Cookies Checker &copy; 2025 | Made By Ichigo Kurosaki</p>
+            <p>Netflix Cookies Checker &copy; 2025 | For Educational Purposes Only</p>
             <p style="margin-top: 10px; font-size: 0.8rem; color: var(--text-secondary);">
                 Created by: t.me/still_alivenow (Ichigo Kurosaki)
             </p>

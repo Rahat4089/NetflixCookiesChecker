@@ -35,6 +35,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    width: 100%;
 }
 
 header {
@@ -60,12 +61,6 @@ header {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
-}
-
-@media (max-width: 768px) {
-    .main-content {
-        grid-template-columns: 1fr;
-    }
 }
 
 .card {
@@ -108,6 +103,8 @@ textarea, input[type="text"], select, input[type="file"] {
     color: var(--text);
     font-size: 1rem;
     transition: var(--transition);
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 textarea:focus, input[type="text"]:focus, select:focus {
@@ -135,6 +132,10 @@ textarea {
     cursor: pointer;
     transition: var(--transition);
     text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 44px;
 }
 
 .btn:hover {
@@ -200,6 +201,7 @@ textarea {
     background-color: var(--dark-light);
     border-radius: 5px;
     overflow: hidden;
+    min-height: 10px;
 }
 
 .progress {
@@ -215,8 +217,101 @@ textarea {
     color: var(--text-secondary);
 }
 
+/* Dropdown Styles */
+.dropdown-toggle {
+    width: 100%;
+    padding: 12px 15px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border: none;
+    border-radius: var(--border-radius);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(229, 9, 20, 0.3);
+}
+
+.dropdown-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+}
+
+.dropdown-toggle.active {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, #8b0000 100%);
+}
+
+.dropdown-toggle i {
+    transition: transform 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.dropdown-toggle.active i {
+    transform: rotate(180deg);
+}
+
+.dropdown-content {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    border: 1px solid var(--dark-light);
+    animation: slideDown 0.3s ease;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+@keyframes slideDown {
+    from { 
+        opacity: 0; 
+        max-height: 0;
+        padding: 0 15px;
+    }
+    to { 
+        opacity: 1; 
+        max-height: 400px;
+        padding: 15px;
+    }
+}
+
+/* Scrollable Results Container */
+.results-container {
+    max-height: 500px;
+    overflow-y: auto;
+    margin-top: 15px;
+    border: 1px solid var(--dark-light);
+    border-radius: var(--border-radius);
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
 .results {
-    margin-top: 20px;
+    padding: 15px;
+}
+
+/* Custom Scrollbar */
+.results-container::-webkit-scrollbar,
+.dropdown-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.results-container::-webkit-scrollbar-track,
+.dropdown-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.results-container::-webkit-scrollbar-thumb,
+.dropdown-content::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+.results-container::-webkit-scrollbar-thumb:hover,
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
 }
 
 .result-item {
@@ -239,25 +334,153 @@ textarea {
     color: var(--text-secondary);
 }
 
+/* Quick Stats */
+.quick-stats {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.stat-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.stat-badge.valid {
+    background: var(--success);
+    color: white;
+}
+
+.stat-badge.invalid {
+    background: var(--danger);
+    color: white;
+}
+
+.stat-badge.premium {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #000;
+}
+
+.stat-badge.basic {
+    background: var(--text-secondary);
+    color: white;
+}
+
+.stat-badge.country {
+    background: var(--primary);
+    color: white;
+}
+
+/* Info Grid Styles */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary);
+    transition: var(--transition);
+}
+
+.info-item:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    transform: translateX(5px);
+}
+
+.info-label {
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.info-value {
+    color: var(--text);
+    font-size: 0.85rem;
+    text-align: right;
+    word-break: break-word;
+    max-width: 60%;
+}
+
+/* Token Information Styles */
+.token-info {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-top: 15px;
+    border: 1px solid var(--dark-light);
+}
+
 .token-url {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 4px;
     word-break: break-all;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    border: 1px solid var(--dark-light);
 }
 
 .copy-btn {
     margin-top: 10px;
-    background-color: transparent;
-    border: 1px solid var(--text-secondary);
-    color: var(--text-secondary);
-    padding: 5px 10px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border: none;
+    color: white;
+    padding: 8px 15px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.8rem;
     transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .copy-btn:hover {
-    background-color: var(--text-secondary);
-    color: var(--dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(229, 9, 20, 0.3);
+}
+
+/* Section Headers */
+.section-header {
+    color: var(--primary);
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-header:first-child {
+    margin-top: 0;
+}
+
+/* Status Indicators */
+.status-valid {
+    color: var(--success) !important;
+    font-weight: bold;
+}
+
+.status-invalid {
+    color: var(--danger) !important;
+    font-weight: bold;
+}
+
+.status-premium {
+    color: #ffd700 !important;
+    font-weight: bold;
 }
 
 .tabs {
@@ -410,6 +633,8 @@ footer {
     transform: translateX(150%);
     transition: transform 0.3s ease;
     z-index: 1000;
+    max-width: calc(100% - 40px);
+    word-wrap: break-word;
 }
 
 .notification.show {
@@ -434,10 +659,6 @@ footer {
     to { transform: rotate(360deg); }
 }
 
-
-
-/* Add these to your existing style.css */
-
 .single-line-result {
     font-size: 0.8rem;
     line-height: 1.3;
@@ -457,11 +678,97 @@ footer {
     text-overflow: ellipsis;
 }
 
-.file-status {
-    font-size: 0.7rem;
+/* Telegram Hit Sender Styles */
+.toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.toggle-label input {
+    display: none;
+}
+
+.toggle-slider {
+    width: 50px;
+    height: 25px;
+    background-color: var(--dark-light);
+    border-radius: 25px;
+    position: relative;
+    margin-right: 10px;
+    transition: var(--transition);
+}
+
+.toggle-slider:before {
+    content: "";
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background-color: white;
+    top: 2px;
+    left: 2px;
+    transition: var(--transition);
+}
+
+.toggle-label input:checked + .toggle-slider {
+    background-color: var(--success);
+}
+
+.toggle-label input:checked + .toggle-slider:before {
+    transform: translateX(25px);
+}
+
+.telegram-config {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+    border-left: 4px solid #0088cc;
+}
+
+.telegram-status {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.telegram-status.enabled {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+.telegram-status.disabled {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+.telegram-status.testing {
+    background-color: rgba(243, 156, 18, 0.2);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+}
+
+.telegram-hit-indicator {
+    display: inline-block;
+    margin-left: 10px;
     padding: 2px 6px;
-    border-radius: 8px;
-    white-space: nowrap;
+    background-color: var(--success);
+    color: white;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
 }
 
 /* Success rate indicator */
@@ -486,39 +793,140 @@ footer {
     color: var(--danger);
 }
 
-/* Detailed info display */
-.detailed-info {
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: var(--border-radius);
-    font-size: 0.75rem;
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .logo {
+        font-size: 2rem;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .summary-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+    }
+    
+    body.mobile .card {
+        padding: 15px;
+    }
+    
+    .dropdown-toggle {
+        padding: 15px;
+        font-size: 1rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .info-item {
+        padding: 10px;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .info-value {
+        max-width: 100%;
+        text-align: left;
+    }
+    
+    .results-container {
+        max-height: 400px;
+    }
+    
+    .dropdown-content {
+        max-height: 300px;
+    }
+    
+    input, textarea, select {
+        font-size: 16px;
+    }
 }
 
-.detailed-info div {
-    margin-bottom: 2px;
+@media (max-width: 480px) {
+    .container {
+        padding: 5px;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+    
+    .card-title {
+        font-size: 1.3rem;
+    }
+    
+    .logo {
+        font-size: 1.8rem;
+    }
+    
+    .tagline {
+        font-size: 1rem;
+    }
+    
+    .mode-toggle {
+        flex-direction: column;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.info-grid {
+/* Mobile-first responsive improvements */
+.main-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 5px;
-    margin-top: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
 }
 
-.info-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 2px 5px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+/* Ensure text areas are responsive */
+textarea, input[type="text"] {
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-.info-label {
-    color: var(--text-secondary);
-    font-weight: bold;
+/* Make file lists scrollable on mobile */
+.file-list {
+    max-height: 200px;
+    overflow-y: auto;
 }
 
-.info-value {
-    color: var(--text);
+/* Responsive table for results */
+.results-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Mobile-specific improvements */
+@media (hover: none) and (pointer: coarse) {
+    .btn {
+        padding: 15px 20px;
+        font-size: 1.1rem;
+    }
 }

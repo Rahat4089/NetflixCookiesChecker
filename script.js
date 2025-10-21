@@ -23,6 +23,14 @@ const validFiles = document.getElementById('valid-files');
 const invalidFiles = document.getElementById('invalid-files');
 const notification = document.getElementById('notification');
 
+// Telegram Elements
+const telegramToggle = document.getElementById('telegram-toggle');
+const telegramConfig = document.getElementById('telegram-config');
+const botTokenInput = document.getElementById('bot-token');
+const chatIdInput = document.getElementById('chat-id');
+const testTelegramBtn = document.getElementById('test-telegram-btn');
+const telegramStatus = document.getElementById('telegram-status');
+
 // Global variables
 let currentMode = 'fullinfo';
 let selectedFiles = [];
@@ -48,6 +56,34 @@ saveResultsBtn.addEventListener('click', handleSaveResults);
 // Initialize the application
 function initApp() {
     updateFileList();
+    initTelegram();
+    handleResponsive();
+    
+    // Add resize listener
+    window.addEventListener('resize', handleResponsive);
+}
+
+// Handle responsive behavior
+function handleResponsive() {
+    const width = window.innerWidth;
+    
+    if (width < 768) {
+        // Mobile optimizations
+        document.body.classList.add('mobile');
+        
+        // Adjust card padding for mobile
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.padding = '15px';
+        });
+        
+    } else {
+        document.body.classList.remove('mobile');
+        
+        // Reset card padding for desktop
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.padding = '25px';
+        });
+    }
 }
 
 // Handle mode change (Full Info / Token Only)
@@ -344,7 +380,7 @@ function handleSaveResults() {
         return;
     }
     
-    let content = 'Netflix Token Generator - Batch Results\n';
+    let content = 'Netflix Cookies Checker - Batch Results\n';
     content += 'Generated on: ' + new Date().toLocaleString() + '\n';
     content += 'Created by: t.me/still_alivenow (Ichigo Kurosaki)\n\n';
     content += '='.repeat(80) + '\n\n';
@@ -413,36 +449,107 @@ function handleSaveResults() {
     showNotification('Results saved successfully');
 }
 
-// Display results
+// Enhanced displayResults function with dropdown and scroll
 function displayResults(data) {
     let html = '';
     
     if (currentMode === 'fullinfo') {
         const account = data.account_info;
+        
         html = `
             <div class="result-item">
                 <div class="result-title">
-                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                    ACCOUNT INFORMATION
+                    <i class="fas fa-user-circle"></i>
+                    ACCOUNT OVERVIEW
+                    ${data.telegram_sent ? '<span class="telegram-hit-indicator"><i class="fab fa-telegram"></i> Telegram</span>' : ''}
                 </div>
                 <div class="result-content">
-                    <div><strong>Status:</strong> ${account.ok ? 'Valid' : 'Invalid'}</div>
-                    <div><strong>Premium:</strong> ${account.premium ? 'Yes' : 'No'}</div>
-                    <div><strong>Country:</strong> ${account.country}</div>
-                    <div><strong>Plan:</strong> ${account.plan}</div>
-                    <div><strong>Price:</strong> ${account.plan_price}</div>
-                    <div><strong>Member Since:</strong> ${account.member_since}</div>
-                    <div><strong>Payment Method:</strong> ${account.payment_method}</div>
-                    <div><strong>Phone:</strong> ${account.phone}</div>
-                    <div><strong>Phone Verified:</strong> ${account.phone_verified}</div>
-                    <div><strong>Video Quality:</strong> ${account.video_quality}</div>
-                    <div><strong>Max Streams:</strong> ${account.max_streams}</div>
-                    <div><strong>Payment Hold:</strong> ${account.on_payment_hold}</div>
-                    <div><strong>Extra Member:</strong> ${account.extra_member}</div>
-                    <div><strong>Email:</strong> ${account.email}</div>
-                    <div><strong>Email Verified:</strong> ${account.email_verified}</div>
-                    <div><strong>Profiles:</strong> ${account.profiles}</div>
-                    <div><strong>Billing:</strong> ${account.next_billing}</div>
+                    <div class="quick-stats">
+                        <div class="stat-badge ${account.ok ? 'valid' : 'invalid'}">${account.ok ? 'VALID' : 'INVALID'}</div>
+                        <div class="stat-badge ${account.premium ? 'premium' : 'basic'}">${account.premium ? 'PREMIUM' : 'BASIC'}</div>
+                        <div class="stat-badge country">${account.country}</div>
+                    </div>
+                    
+                    <button class="dropdown-toggle" onclick="toggleResults(this)">
+                        <i class="fas fa-chevron-down"></i>
+                        Show Full Account Details
+                    </button>
+                    <div class="dropdown-content" style="display: none;">
+                        <div class="section-header">
+                            <i class="fas fa-id-card"></i>
+                            ACCOUNT INFORMATION
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="info-value ${account.ok ? 'status-valid' : 'status-invalid'}">${account.ok ? 'Valid' : 'Invalid'}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Premium:</span>
+                                <span class="info-value ${account.premium ? 'status-premium' : ''}">${account.premium ? 'Yes' : 'No'}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Country:</span>
+                                <span class="info-value">${account.country}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Plan:</span>
+                                <span class="info-value">${account.plan}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Price:</span>
+                                <span class="info-value">${account.plan_price}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Member Since:</span>
+                                <span class="info-value">${account.member_since}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Payment Method:</span>
+                                <span class="info-value">${account.payment_method}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Phone:</span>
+                                <span class="info-value">${account.phone}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Phone Verified:</span>
+                                <span class="info-value">${account.phone_verified}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Video Quality:</span>
+                                <span class="info-value">${account.video_quality}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Max Streams:</span>
+                                <span class="info-value">${account.max_streams}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Payment Hold:</span>
+                                <span class="info-value">${account.on_payment_hold}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Extra Member:</span>
+                                <span class="info-value">${account.extra_member}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email:</span>
+                                <span class="info-value">${account.email.replace(/\\x40/g, '@')}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email Verified:</span>
+                                <span class="info-value">${account.email_verified}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Profiles:</span>
+                                <span class="info-value">${account.profiles}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Billing:</span>
+                                <span class="info-value">${account.next_billing}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
@@ -453,31 +560,55 @@ function displayResults(data) {
         const genTime = new Date(token.generation_time * 1000).toLocaleString();
         const expTime = new Date(token.expires * 1000).toLocaleString();
         
-        const timeRemaining = token.time_remaining;
-        const days = Math.floor(timeRemaining / 86400);
-        const hours = Math.floor((timeRemaining % 86400) / 3600);
-        const minutes = Math.floor((timeRemaining % 3600) / 60);
-        const seconds = timeRemaining % 60;
+        const days = Math.floor(token.time_remaining / 86400);
+        const hours = Math.floor((token.time_remaining % 86400) / 3600);
+        const minutes = Math.floor((token.time_remaining % 3600) / 60);
+        const seconds = token.time_remaining % 60;
         
         html += `
             <div class="result-item">
                 <div class="result-title">
-                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    <i class="fas fa-key"></i>
                     TOKEN INFORMATION
                 </div>
                 <div class="result-content">
-                    <div><strong>Status:</strong> ${token.status}</div>
-                    <div><strong>Generation Time:</strong> ${genTime}</div>
-                    <div><strong>Expiry:</strong> ${expTime}</div>
-                    <div><strong>Time Remaining:</strong> ${days}d ${hours}h ${minutes}m ${seconds}s</div>
-                    <div><strong>Token:</strong> ${token.token}</div>
-                    <div><strong>Direct Login URL:</strong> 
-                        <span class="token-url">${token.direct_login_url}</span>
+                    <div class="token-info">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="info-value status-valid">${token.status}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Generation Time:</span>
+                                <span class="info-value">${genTime}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Expiry:</span>
+                                <span class="info-value">${expTime}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Time Remaining:</span>
+                                <span class="info-value">${days}d ${hours}h ${minutes}m ${seconds}s</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <div class="info-label" style="margin-bottom: 8px;">Direct Login URL:</div>
+                            <div class="token-url">${token.direct_login_url}</div>
+                            <button class="copy-btn" data-text="${token.direct_login_url}">
+                                <i class="fas fa-copy"></i> Copy Login URL
+                            </button>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <div class="info-label" style="margin-bottom: 8px;">Token:</div>
+                            <div class="token-url">${token.token}</div>
+                            <button class="copy-btn" data-text="${token.token}">
+                                <i class="fas fa-copy"></i> Copy Token
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button class="copy-btn" data-text="${token.direct_login_url}">
-                    <i class="fas fa-copy"></i> Copy URL
-                </button>
             </div>
         `;
     } else {
@@ -488,13 +619,19 @@ function displayResults(data) {
                     TOKEN GENERATION FAILED
                 </div>
                 <div class="result-content">
-                    <div><strong>Error:</strong> ${token.error}</div>
+                    <div class="info-item">
+                        <span class="info-label">Error:</span>
+                        <span class="info-value">${token.error}</span>
+                    </div>
                 </div>
             </div>
         `;
     }
     
+    // Update the results container
     results.innerHTML = html;
+    
+    // Enable copy buttons
     copyResultsBtn.disabled = false;
     
     // Add event listeners to copy buttons
@@ -503,10 +640,10 @@ function displayResults(data) {
             const text = this.dataset.text;
             navigator.clipboard.writeText(text)
                 .then(() => {
-                    showNotification('URL copied to clipboard');
+                    showNotification('Copied to clipboard');
                 })
                 .catch(err => {
-                    showNotification('Failed to copy URL', true);
+                    showNotification('Failed to copy', true);
                 });
         });
     });
@@ -542,4 +679,155 @@ function showNotification(message, isError = false) {
     setTimeout(() => {
         notification.classList.remove('show');
     }, 3000);
+}
+
+// Toggle dropdown for results
+function toggleResults(button) {
+    const dropdownContent = button.nextElementSibling;
+    const isVisible = dropdownContent.style.display === 'block';
+    
+    if (isVisible) {
+        dropdownContent.style.display = 'none';
+        button.classList.remove('active');
+        button.innerHTML = '<i class="fas fa-chevron-down"></i> Show Account Details';
+    } else {
+        dropdownContent.style.display = 'block';
+        button.classList.add('active');
+        button.innerHTML = '<i class="fas fa-chevron-up"></i> Hide Account Details';
+    }
+}
+
+// Close all dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.dropdown-toggle')) {
+        document.querySelectorAll('.dropdown-content').forEach(content => {
+            content.style.display = 'none';
+        });
+        document.querySelectorAll('.dropdown-toggle').forEach(button => {
+            button.classList.remove('active');
+            button.innerHTML = '<i class="fas fa-chevron-down"></i> Show Account Details';
+        });
+    }
+});
+
+// Telegram Hit Sender functionality
+
+// Load saved Telegram config
+function loadTelegramConfig() {
+    const savedConfig = localStorage.getItem('telegramConfig');
+    if (savedConfig) {
+        const config = JSON.parse(savedConfig);
+        telegramToggle.checked = config.enabled || false;
+        botTokenInput.value = config.bot_token || '';
+        chatIdInput.value = config.chat_id || '';
+        updateTelegramUI();
+    }
+}
+
+// Update Telegram UI based on toggle state
+function updateTelegramUI() {
+    if (telegramToggle.checked) {
+        telegramConfig.style.display = 'block';
+        telegramStatus.className = 'telegram-status enabled';
+        telegramStatus.innerHTML = '<i class="fas fa-check-circle"></i> Telegram hits are enabled';
+    } else {
+        telegramConfig.style.display = 'none';
+        telegramStatus.className = 'telegram-status disabled';
+        telegramStatus.innerHTML = '<i class="fas fa-times-circle"></i> Telegram hits are disabled';
+    }
+}
+
+// Save Telegram config
+function saveTelegramConfig() {
+    const config = {
+        enabled: telegramToggle.checked,
+        bot_token: botTokenInput.value,
+        chat_id: chatIdInput.value
+    };
+    localStorage.setItem('telegramConfig', JSON.stringify(config));
+    
+    // Send to server
+    fetch('/api/telegram-config', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(config)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            showNotification('Telegram configuration saved');
+        } else {
+            showNotification('Error saving Telegram config', true);
+        }
+    })
+    .catch(error => {
+        showNotification('Error saving Telegram config', true);
+    });
+}
+
+// Test Telegram connection
+function testTelegramConnection() {
+    if (!botTokenInput.value || !chatIdInput.value) {
+        showNotification('Please enter both Bot Token and Chat ID', true);
+        return;
+    }
+    
+    testTelegramBtn.disabled = true;
+    testTelegramBtn.innerHTML = '<div class="spinner"></div> Testing...';
+    telegramStatus.className = 'telegram-status testing';
+    telegramStatus.innerHTML = '<i class="fas fa-sync-alt"></i> Testing Telegram connection...';
+    
+    // Simple test by sending a test message
+    const testMessage = {
+        chat_id: chatIdInput.value,
+        text: '✅ Netflix Cookies Checker Test\n\nThis is a test message from your Netflix Cookies Checker. If you receive this, your Telegram configuration is working correctly!',
+        parse_mode: 'Markdown'
+    };
+    
+    fetch(`https://api.telegram.org/bot${botTokenInput.value}/sendMessage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(testMessage)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            telegramStatus.className = 'telegram-status enabled';
+            telegramStatus.innerHTML = '<i class="fas fa-check-circle"></i> Telegram connection successful!';
+            showNotification('Telegram test successful!');
+        } else {
+            telegramStatus.className = 'telegram-status disabled';
+            telegramStatus.innerHTML = `<i class="fas fa-times-circle"></i> Telegram error: ${data.description || 'Unknown error'}`;
+            showNotification('Telegram test failed: ' + (data.description || 'Unknown error'), true);
+        }
+    })
+    .catch(error => {
+        telegramStatus.className = 'telegram-status disabled';
+        telegramStatus.innerHTML = '<i class="fas fa-times-circle"></i> Telegram connection failed';
+        showNotification('Telegram test failed: Network error', true);
+    })
+    .finally(() => {
+        testTelegramBtn.disabled = false;
+        testTelegramBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Test Connection';
+    });
+}
+
+// Initialize Telegram functionality
+function initTelegram() {
+    loadTelegramConfig();
+    
+    telegramToggle.addEventListener('change', function() {
+        updateTelegramUI();
+        saveTelegramConfig();
+    });
+    
+    botTokenInput.addEventListener('input', saveTelegramConfig);
+    chatIdInput.addEventListener('input', saveTelegramConfig);
+    testTelegramBtn.addEventListener('click', testTelegramConnection);
+    
+    updateTelegramUI();
 }
