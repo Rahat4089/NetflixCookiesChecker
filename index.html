@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Cookies Checker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Netflix Cookies Checker</div>
+            <div class="tagline">Check Cookies Or Generate Login Token With Ease</div>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="single">Single Input</div>
+            <div class="tab" data-tab="batch">Batch Processing</div>
+            <div class="tab" data-tab="about">About</div>
+        </div>
+
+        <div class="tab-content active" id="single-tab">
+            <div class="main-content">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-cookie"></i>
+                        Input Cookies
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="cookie-input">Paste your Netflix cookies here:</label>
+                        <textarea id="cookie-input" placeholder="Paste cookies in JSON format, text format, or Netscape format..."></textarea>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn" id="load-file-btn">
+                            <i class="fas fa-file-import"></i>
+                            Load from File
+                        </button>
+                        <button class="btn btn-secondary" id="paste-btn">
+                            <i class="fas fa-paste"></i>
+                            Paste from Clipboard
+                        </button>
+                        <button class="btn btn-secondary" id="clear-btn">
+                            <i class="fas fa-broom"></i>
+                            Clear
+                        </button>
+                    </div>
+                    
+                    <div class="mode-toggle">
+                        <div class="mode-option active" data-mode="fullinfo">Full Info</div>
+                        <div class="mode-option" data-mode="tokenonly">Token Only</div>
+                    </div>
+                    
+                    <button class="btn btn-success" id="generate-btn" style="width: 100%;">
+                        <i class="fas fa-key"></i>
+                        Generate Token
+                    </button>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress" id="progress"></div>
+                        </div>
+                        <div class="status" id="status">Ready</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-key"></i>
+                        Results
+                    </div>
+                    
+                    <div class="results" id="results">
+                        <div class="result-item">
+                            <div class="result-title">
+                                <i class="fas fa-info-circle"></i>
+                                No results yet
+                            </div>
+                            <div class="result-content">
+                                Process some cookies to see results here.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="copy-results-btn" style="width: 100%; margin-top: 15px;" disabled>
+                        <i class="fas fa-copy"></i>
+                        Copy Results
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="batch-tab">
+            <div class="main-content">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-folder-open"></i>
+                        Batch Processing
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Select multiple cookie files:</label>
+                        <input type="file" id="batch-files" multiple accept=".txt,.json,.zip" style="padding: 8px;">
+                    </div>
+                    
+                    <div class="file-list" id="file-list">
+                        <div class="file-item">
+                            <span>No files selected</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mode-toggle">
+                        <div class="mode-option active" data-mode="fullinfo">Full Info</div>
+                        <div class="mode-option" data-mode="tokenonly">Token Only</div>
+                    </div>
+                    
+                    <button class="btn btn-success" id="process-batch-btn" style="width: 100%;">
+                        <i class="fas fa-cogs"></i>
+                        Process Batch
+                    </button>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress" id="batch-progress"></div>
+                        </div>
+                        <div class="status" id="batch-status">Ready</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Batch Results
+                    </div>
+                    
+                    <div class="summary">
+                        <div class="summary-title">Processing Summary</div>
+                        <div class="summary-stats">
+                            <div class="stat total">
+                                <div class="stat-value" id="total-files">0</div>
+                                <div class="stat-label">Total Files</div>
+                            </div>
+                            <div class="stat valid">
+                                <div class="stat-value" id="valid-files">0</div>
+                                <div class="stat-label">Valid</div>
+                            </div>
+                            <div class="stat invalid">
+                                <div class="stat-value" id="invalid-files">0</div>
+                                <div class="stat-label">Invalid</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="file-list" id="batch-results" style="max-height: 300px; margin-top: 15px;">
+                        <div class="file-item">
+                            <span>No results yet</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="save-results-btn" style="width: 100%; margin-top: 15px;" disabled>
+                        <i class="fas fa-save"></i>
+                        Save Results
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="about-tab">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-info-circle"></i>
+                    About Netflix Cookies Checker
+                </div>
+                
+                <p>This application extracts NetflixId from various cookie formats and generates direct login tokens.</p>
+                
+                <h3 style="margin: 20px 0 10px; color: var(--primary);">Features:</h3>
+                <ul style="padding-left: 20px; margin-bottom: 20px;">
+                    <li>Extract NetflixId from text, JSON, or cookie files</li>
+                    <li>Check account validity and details</li>
+                    <li>Generate direct login tokens</li>
+                    <li>Batch processing of multiple files</li>
+                </ul>
+                
+                <h3 style="margin: 20px 0 10px; color: var(--primary);">Supported Formats:</h3>
+                <ul style="padding-left: 20px; margin-bottom: 20px;">
+                    <li>Text files with cookies</li>
+                    <li>JSON files with cookies</li>
+                    <li>ZIP files containing multiple cookie files</li>
+                    <li>Header strings with NetflixId cookie</li>
+                    <li>Netscape format cookie files</li>
+                </ul>
+                
+                <h3 style="margin: 20px 0 10px; color: var(--primary);">Usage:</h3>
+                <ol style="padding-left: 20px; margin-bottom: 20px;">
+                    <li>Paste cookies or load from file in the Single Input tab</li>
+                    <li>Select your preferred output mode (Full Info or Token Only)</li>
+                    <li>Click "Generate Token" to process</li>
+                    <li>For multiple files, use the Batch Processing tab</li>
+                </ol>
+                
+                <p style="margin-top: 20px; padding: 15px; background-color: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius);">
+                    <strong>Note:</strong> This tool is for educational purposes only.
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Netflix Cookies Checker &copy; 2025 | Made By Ichigo Kurosaki</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: var(--text-secondary);">
+                Created by: t.me/still_alivenow (Ichigo Kurosaki)
+            </p>
+        </footer>
+    </div>
+
+    <div class="notification" id="notification">Operation completed successfully!</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

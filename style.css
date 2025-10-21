@@ -1,0 +1,524 @@
+:root {
+    --primary: #e50914;
+    --primary-dark: #b2070f;
+    --dark: #141414;
+    --dark-light: #2d2d2d;
+    --text: #ffffff;
+    --text-secondary: #b3b3b3;
+    --success: #2ecc71;
+    --warning: #f39c12;
+    --danger: #e74c3c;
+    --card-bg: rgba(45, 45, 45, 0.7);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text);
+    line-height: 1.6;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                      url('https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f71/5f05e8e9-8c1b-4304-b202-4c6e5b8f20e5/US-en-20210719-popsignuptwoweeks-perspective_alpha_website_large.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--dark-light);
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.tagline {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-title i {
+    color: var(--primary);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+}
+
+textarea, input[type="text"], select, input[type="file"] {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--dark-light);
+    border-radius: var(--border-radius);
+    color: var(--text);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+textarea:focus, input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn:disabled {
+    background-color: var(--dark-light);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background-color: var(--dark-light);
+}
+
+.btn-secondary:hover {
+    background-color: #3d3d3d;
+}
+
+.btn-success {
+    background-color: var(--success);
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.mode-toggle {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: var(--border-radius);
+    padding: 5px;
+    margin-bottom: 20px;
+}
+
+.mode-option {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: calc(var(--border-radius) - 2px);
+    transition: var(--transition);
+}
+
+.mode-option.active {
+    background-color: var(--primary);
+}
+
+.progress-container {
+    margin: 20px 0;
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: var(--dark-light);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background-color: var(--primary);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.status {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.results {
+    margin-top: 20px;
+}
+
+.result-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary);
+}
+
+.result-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.result-content {
+    color: var(--text-secondary);
+}
+
+.token-url {
+    word-break: break-all;
+}
+
+.copy-btn {
+    margin-top: 10px;
+    background-color: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-secondary);
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.copy-btn:hover {
+    background-color: var(--text-secondary);
+    color: var(--dark);
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--dark-light);
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    border-bottom: 3px solid transparent;
+}
+
+.tab.active {
+    border-bottom: 3px solid var(--primary);
+    color: var(--primary);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.batch-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.file-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+}
+
+.file-item {
+    padding: 8px;
+    border-bottom: 1px solid var(--dark-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-item:last-child {
+    border-bottom: none;
+}
+
+.file-status {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.file-status.valid {
+    background-color: var(--success);
+    color: white;
+}
+
+.file-status.invalid {
+    background-color: var(--danger);
+    color: white;
+}
+
+.file-status.processing {
+    background-color: var(--warning);
+    color: white;
+}
+
+.summary {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+}
+
+.summary-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.stat {
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: var(--border-radius);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.stat.valid .stat-value {
+    color: var(--success);
+}
+
+.stat.invalid .stat-value {
+    color: var(--danger);
+}
+
+.stat.total .stat-value {
+    color: var(--primary);
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--dark-light);
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    background-color: var(--success);
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transform: translateX(150%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.error {
+    background-color: var(--danger);
+}
+
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--text);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+
+/* Add these to your existing style.css */
+
+.single-line-result {
+    font-size: 0.8rem;
+    line-height: 1.3;
+    padding: 6px 8px;
+}
+
+.single-line-result .file-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.single-line-result .file-info span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-status {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+/* Success rate indicator */
+.success-rate {
+    margin-top: 10px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-weight: bold;
+}
+
+.success-rate.high {
+    color: var(--success);
+}
+
+.success-rate.medium {
+    color: var(--warning);
+}
+
+.success-rate.low {
+    color: var(--danger);
+}
+
+/* Detailed info display */
+.detailed-info {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+}
+
+.detailed-info div {
+    margin-bottom: 2px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.info-label {
+    color: var(--text-secondary);
+    font-weight: bold;
+}
+
+.info-value {
+    color: var(--text);
+}
